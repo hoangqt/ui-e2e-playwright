@@ -1,0 +1,22 @@
+{
+  "name": "ui-e2e-playwright",
+  "version": "1.0.0",
+  "main": "",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --ui",
+    "allure": "npx allure-commandline serve allure-results"
+  },
+  "keywords": [],
+  "author": "Hoang Tran",
+  "license": "MIT",
+  "description": "An npm project based on playwright UI test framework.",
+  "devDependencies": {
+    "@faker-js/faker": "^9.9.0",
+    "@playwright/test": "^1.56.1",
+    "allure-playwright": "^3.4.2",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
