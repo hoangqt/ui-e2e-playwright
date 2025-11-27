@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { LoginPage } from "../../pages/LoginPage";
 import { ProductsPage } from "../../pages/ProductsPage";
 import { testUsers } from "../../data/users";
+import { AxeBuilder } from "@axe-core/playwright";
 
 test.describe("Smoke testing", () => {
   test.beforeEach(async ({ page }) => {
@@ -27,5 +28,14 @@ test.describe("Smoke testing", () => {
     await productsPage.addProductToCart("Sauce Labs Backpack");
     await productsPage.cart();
     await productsPage.checkout();
+  });
+
+  test("should have accessibility violations", async ({ page }) => {
+    // Check against wcag2a and wcag21aa rules
+    const accessibilityResults = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag21aa"])
+      .analyze();
+    // This page is not WCAG compliant so expect violations to be greater than 0
+    expect(accessibilityResults.violations.length).toBeGreaterThan(0);
   });
 });

@@ -12,6 +12,7 @@
   "license": "MIT",
   "description": "An npm project based on playwright UI test framework.",
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
     "@faker-js/faker": "^9.9.0",
     "@playwright/test": "^1.56.1",
     "allure-playwright": "^3.4.2",
