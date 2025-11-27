@@ -17,5 +17,12 @@ export default defineConfig({
     headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    // Disable password manager to avoid popups
+    launchOptions: {
+      args: [
+        '--disable-features=PasswordManager',
+        '--disable-password-manager-reauthentication',
+      ],
+    },
   },
 });

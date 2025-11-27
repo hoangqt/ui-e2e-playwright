@@ -1,14 +1,14 @@
 export class LoginPage {
-  constructor(private page: any) {}
+  constructor(private page: any) { }
 
   async goto() {
-    await this.page.goto('https://the-internet.herokuapp.com/login');
+    await this.page.goto('https://www.saucedemo.com');
   }
 
   async login(username: string, password: string) {
-    await this.page.fill('#username', username);
+    await this.page.fill('#user-name', username);
     await this.page.fill('#password', password);
-    await this.page.click('button[type="submit"]');
+    await this.page.click('#login-button');
   }
 
   async logout() {
@@ -16,7 +16,8 @@ export class LoginPage {
   }
 
   async isSuccessMessageVisible() {
-    await this.page.waitForSelector('.flash.success', { state: 'visible', timeout: 5000 });
+    // Wait for the shopping cart link to be visible
+    await this.page.waitForSelector('[data-test="shopping-cart-link"]', { state: 'visible', timeout: 5000 });
     return true;
   }
 }
