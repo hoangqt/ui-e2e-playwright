@@ -12,6 +12,23 @@ export default defineConfig({
       },
     ],
   ],
+  // Multi-browser testing
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
   use: {
     browserName: 'chromium',
     headless: true,
