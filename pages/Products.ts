@@ -14,11 +14,19 @@ export class Products {
   }
 
   async addProductToCart(productName: string) {
-    await this.page.getByText(productName).click();
+    await this.page
+      .locator(".inventory_item")
+      .filter({ hasText: productName })
+      .getByRole("button", { name: "Add to cart" })
+      .click();
   }
 
   async removeProductFromCart(productName: string) {
-    await this.page.getByText(productName).click();
+    await this.page
+      .locator(".cart_item")
+      .filter({ hasText: productName })
+      .getByRole("button", { name: "Remove" })
+      .click();
   }
 
   async cart() {
@@ -35,5 +43,13 @@ export class Products {
 
   async checkout() {
     await this.page.getByText("Checkout", { exact: true }).click();
+  }
+
+  async cancel() {
+    await this.page.getByText("Cancel", { exact: true }).click();
+  }
+
+  async continueShopping() {
+    await this.page.getByText("Continue Shopping", { exact: true }).click();
   }
 }

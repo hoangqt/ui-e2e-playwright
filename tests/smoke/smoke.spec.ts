@@ -28,6 +28,22 @@ test.describe("Smoke testing", () => {
     await productsPage.addProductToCart("Sauce Labs Backpack");
     await productsPage.cart();
     await productsPage.checkout();
+    await productsPage.cancel();
+    await productsPage.continueShopping();
+  });
+
+  test("should remove product from cart", async ({ page }) => {
+    const productName = "Sauce Labs Bike Light";
+    const productsPage = new Products(page);
+    await productsPage.goto();
+    expect(await productsPage.isProductsPageVisible()).toBe(true);
+
+    await productsPage.addProductToCart(productName);
+    await productsPage.cart();
+    await productsPage.removeProductFromCart(productName);
+
+    // Verify the product is no longer visible on the cart page
+    await expect(page.getByText(productName)).not.toBeVisible();
   });
 
   test("should have accessibility violations", async ({ page }) => {
