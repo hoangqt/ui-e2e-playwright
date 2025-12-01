@@ -1,12 +1,12 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../pages/LoginPage";
-import { ProductsPage } from "../../pages/ProductsPage";
+import { Login } from "../../pages/Login";
+import { Products } from "../../pages/Products";
 import { testUsers } from "../../data/users";
 import { AxeBuilder } from "@axe-core/playwright";
 
 test.describe("Smoke testing", () => {
   test.beforeEach(async ({ page }) => {
-    const loginPage = new LoginPage(page);
+    const loginPage = new Login(page);
     await loginPage.goto();
     await loginPage.login(
       testUsers.standardUser.username,
@@ -16,12 +16,12 @@ test.describe("Smoke testing", () => {
   });
 
   test("should log in successfully", async ({ page }) => {
-    const productsPage = new ProductsPage(page);
+    const productsPage = new Products(page);
     expect(await productsPage.isProductsPageVisible()).toBe(true);
   });
 
   test("should add product to cart and checkout", async ({ page }) => {
-    const productsPage = new ProductsPage(page);
+    const productsPage = new Products(page);
     await productsPage.goto();
     expect(await productsPage.isProductsPageVisible()).toBe(true);
 

@@ -40,7 +40,7 @@ jobs:
 
       - name: Run code formatting
         run: |
-          npx prettier --check tests
+          npx prettier --check pages tests
 
       - name: Run tests
         run: |
