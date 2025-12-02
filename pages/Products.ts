@@ -1,16 +1,20 @@
+import { Page } from "@playwright/test";
+
 export class Products {
-  constructor(private page: any) {}
+  constructor(private page: Page) {}
 
   async goto() {
     await this.page.goto("https://www.saucedemo.com/inventory.html");
   }
 
-  async isProductsPageVisible() {
-    await this.page.waitForSelector('[data-test="title"]', {
-      state: "visible",
-      timeout: 5000,
-    });
-    return true;
+  async isProductsPageVisible(): Promise<boolean> {
+    const title = this.page.locator('[data-test="title"]');
+    try {
+      await title.waitFor({ state: "visible", timeout: 5000 });
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   async addProductToCart(productName: string) {
@@ -21,35 +25,18 @@ export class Products {
       .click();
   }
 
-  async removeProductFromCart(productName: string) {
-    await this.page
-      .locator(".cart_item")
-      .filter({ hasText: productName })
-      .getByRole("button", { name: "Remove" })
-      .click();
-  }
-
-  async cart() {
+  async navigateToCart() {
     await this.page.click('[data-test="shopping-cart-link"]');
   }
 
-  async cartContinueShopping() {
-    await this.page.click('[data-test="continue-shopping"]');
-  }
-
-  async cartCheckout() {
-    await this.page.click('[data-test="checkout"]');
-  }
-
-  async checkout() {
-    await this.page.getByText("Checkout", { exact: true }).click();
-  }
-
-  async cancel() {
-    await this.page.getByText("Cancel", { exact: true }).click();
-  }
-
-  async continueShopping() {
-    await this.page.getByText("Continue Shopping", { exact: true }).click();
+  async getCartBadgeCount(): Promise<number> {
+    try {
+      const badge = this.page.locator('[data-test="shopping-cart-badge"]');
+      await badge.waitFor({ state: "visible", timeout: 5000 });
+      const count = await badge.textContent();
+      return count ? parseInt(count, 10) : 0;
+    } catch {
+      return 0; // Badge not visible means 0 items
+    }
   }
 }
