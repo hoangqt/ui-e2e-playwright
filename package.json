@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "Hoang Tran",
   "license": "MIT",
-  "description": "An npm project based on playwright UI test framework.",
+  "description": "A simple bun project to test e2e UI using playwright.",
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
     "@faker-js/faker": "^9.9.0",
