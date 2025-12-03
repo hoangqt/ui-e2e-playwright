@@ -10,28 +10,30 @@ will be in Allure format.
 
 ### Local setup
 
+- Install Bun https://bun.com
+
 - Run the following
 
 ```console
-npm install
-npx playwright install-deps
+bun install
+bunx playwright install-deps
 ```
 - Then install the browsers
 
 ```console
-npx playwright install chromium
-npx playwright install firefox
-npx playwright install webkit
+bunx playwright install chromium
+bunx playwright install firefox
+bunx playwright install webkit
 ```
 
 - Run the tests in headless mode
 
 ```console
-npm run test
+bun run test
 ```
 
 - View results in Allure
 
 ```console
-npm run allure
+bun run allure
 ```

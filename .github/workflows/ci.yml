@@ -19,32 +19,32 @@ jobs:
         with:
           submodules: false
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20'
+          bun-version: 1.3.3
 
       - name: Install dependencies
         run: |
-          npm install
+          bun install
 
       - name: Install Playwright dependencies
         run: |
-          npx playwright install-deps
+          bunx playwright install-deps
 
       - name: Install Playwright drivers
         run: |
-          npx playwright install chromium
-          npx playwright install firefox
-          npx playwright install webkit
+          bunx playwright install chromium
+          bunx playwright install firefox
+          bunx playwright install webkit
 
       - name: Run code formatting
         run: |
-          npx prettier --check pages tests
+          bunx prettier --check pages tests
 
       - name: Run tests
         run: |
-          npm run test
+          bun run test
 
       - name: Upload Allure report
         if: always()
