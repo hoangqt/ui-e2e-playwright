@@ -5,7 +5,7 @@ when it ends -- The Pilgrim Beatitudes*
 
 ## Summary
 
-A simple npm project to test e2e UI using playwright. The test results
+A simple bun project to test e2e UI using playwright. The test results
 will be in Allure format.
 
 ### Local setup
