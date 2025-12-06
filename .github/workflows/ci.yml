@@ -40,7 +40,7 @@ jobs:
 
       - name: Run code formatting
         run: |
-          bunx prettier --check pages tests
+          bunx prettier --check pages tests data
 
       - name: Run tests
         run: |
