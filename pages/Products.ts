@@ -17,11 +17,19 @@ export class Products {
     }
   }
 
-  async addProductToCart(productName: string) {
+  async addProduct(productName: string) {
     await this.page
       .locator(".inventory_item")
       .filter({ hasText: productName })
       .getByRole("button", { name: "Add to cart" })
+      .click();
+  }
+
+  async removeProduct(productName: string) {
+    await this.page
+      .locator(".inventory_item")
+      .filter({ hasText: productName })
+      .getByRole("button", { name: "Remove" })
       .click();
   }
 

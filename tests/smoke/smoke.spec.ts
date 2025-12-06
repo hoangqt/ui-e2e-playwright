@@ -3,9 +3,12 @@ import { Login } from "../../pages/Login";
 import { Products } from "../../pages/Products";
 import { Cart } from "../../pages/Cart";
 import { Checkout } from "../../pages/Checkout";
+import { CheckoutOverview } from "../../pages/CheckoutOverview";
+import { CheckoutComplete } from "../../pages/CheckoutComplete";
 import { testUsers } from "../../data/users";
 import { AxeBuilder } from "@axe-core/playwright";
 import { testProducts } from "../../data/products";
+import { generateUser, generateAddress } from "../../data/syntheticData";
 
 test.describe("Smoke testing", () => {
   test.beforeEach(async ({ page }) => {
@@ -18,23 +21,23 @@ test.describe("Smoke testing", () => {
     expect(await loginPage.isSuccessMessageVisible()).toBe(true);
   });
 
-  test("should add product to cart and checkout", async ({ page }) => {
+  test("should add product and remove", async ({ page }) => {
     const products = new Products(page);
     expect(await products.isProductsPageVisible()).toBe(true);
 
-    await products.addProductToCart(testProducts.backpack);
-    // Verify cart badge count is displayed
-    const cartCount = await products.getCartBadgeCount();
-    expect(cartCount).toBe(1);
+    await products.addProduct(testProducts.backpack);
+    expect(await products.getCartBadgeCount()).toBe(1);
+
+    await products.removeProduct(testProducts.backpack);
+    expect(await products.getCartBadgeCount()).toBe(0);
   });
 
   test("should remove product from cart", async ({ page }) => {
-    const productName = testProducts.backpack;
+    const productName = testProducts.fleece;
     const products = new Products(page);
     expect(await products.isProductsPageVisible()).toBe(true);
 
-    await products.addProductToCart(productName);
-    // Verify product was added to cart
+    await products.addProduct(productName);
     expect(await products.getCartBadgeCount()).toBe(1);
 
     await products.navigateToCart();
@@ -52,19 +55,50 @@ test.describe("Smoke testing", () => {
     const products = new Products(page);
     expect(await products.isProductsPageVisible()).toBe(true);
 
-    await products.addProductToCart(testProducts.bikeLight);
+    await products.addProduct(testProducts.bikeLight);
+
     await products.navigateToCart();
     const cart = new Cart(page);
-    const checkout = new Checkout(page);
 
+    const checkout = new Checkout(page);
     await cart.checkout();
-    // Verify checkout page is displayed
+
     expect(await checkout.isCheckoutInformationPageVisible()).toBe(true);
 
     await checkout.cancel();
 
-    // Verify the user is back on the Your Cart page
     expect(await cart.isCartPageVisible()).toBe(true);
+  });
+
+  test("should checkout and pay", async ({ page }) => {
+    const products = new Products(page);
+    expect(await products.isProductsPageVisible()).toBe(true);
+
+    await products.addProduct(testProducts.backpack);
+
+    await products.navigateToCart();
+    const cart = new Cart(page);
+
+    const checkout = new Checkout(page);
+    await cart.checkout();
+
+    expect(await checkout.isCheckoutInformationPageVisible()).toBe(true);
+
+    const fakeUser = generateUser();
+    const fakeAddress = generateAddress();
+
+    await checkout.setFirstName(fakeUser.firstName);
+    await checkout.setLastName(fakeUser.lastName);
+    await checkout.setPostalCode(fakeAddress.postalCode);
+
+    await checkout.continue();
+
+    const checkoutOverview = new CheckoutOverview(page);
+    expect(await checkoutOverview.isCheckoutOverviewPageVisible()).toBe(true);
+    await checkoutOverview.finish();
+
+    const checkoutComplete = new CheckoutComplete(page);
+    expect(await checkoutComplete.isCheckoutCompletePageVisible()).toBe(true);
   });
 
   test("should have accessibility violations", async ({ page }) => {
