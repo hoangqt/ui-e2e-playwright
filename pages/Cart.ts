@@ -33,7 +33,7 @@ export class Cart {
 
   async isCartPageVisible(): Promise<boolean> {
     const cartTitle = this.page
-      .locator('[data-test="title"]')
+      .getByTestId("title")
       .filter({ hasText: "Your Cart" });
     try {
       await cartTitle.waitFor({ state: "visible", timeout: 3000 });

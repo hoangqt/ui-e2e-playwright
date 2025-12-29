@@ -4,11 +4,11 @@ export class Products {
   constructor(private page: Page) {}
 
   async goto() {
-    await this.page.goto("https://www.saucedemo.com/inventory.html");
+    await this.page.goto("/inventory.html");
   }
 
   async isProductsPageVisible(): Promise<boolean> {
-    const title = this.page.locator('[data-test="title"]');
+    const title = this.page.getByTestId("title");
     try {
       await title.waitFor({ state: "visible", timeout: 5000 });
       return true;
@@ -34,12 +34,12 @@ export class Products {
   }
 
   async navigateToCart() {
-    await this.page.click('[data-test="shopping-cart-link"]');
+    await this.page.getByTestId("shopping-cart-link").click();
   }
 
   async getCartBadgeCount(): Promise<number> {
     try {
-      const badge = this.page.locator('[data-test="shopping-cart-badge"]');
+      const badge = this.page.getByTestId("shopping-cart-badge");
       await badge.waitFor({ state: "visible", timeout: 5000 });
       const count = await badge.textContent();
       return count ? parseInt(count, 10) : 0;

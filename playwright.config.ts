@@ -30,6 +30,9 @@ export default defineConfig({
     },
   ],
   use: {
+    // Use data-test attribute when using page.getByTestId(testId).
+    testIdAttribute: 'data-test',
+    baseURL: 'https://www.saucedemo.com',
     browserName: 'chromium',
     headless: true,
     screenshot: 'only-on-failure',

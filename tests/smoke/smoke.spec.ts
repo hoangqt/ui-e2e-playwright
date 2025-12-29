@@ -34,20 +34,20 @@ test.describe("Smoke testing", () => {
 
   test("should remove product from cart", async ({ page }) => {
     const productName = testProducts.fleece;
+
     const products = new Products(page);
     expect(await products.isProductsPageVisible()).toBe(true);
 
     await products.addProduct(productName);
     expect(await products.getCartBadgeCount()).toBe(1);
 
+    // Remove product from cart
     await products.navigateToCart();
-
     const cart = new Cart(page);
     await cart.removeProductFromCart(productName);
-
-    // Verify the product is no longer visible on the cart page
     expect(await cart.isProductVisible(productName)).toBe(false);
-    // Verify cart badge is cleared
+
+    // Cart badge should be empty
     expect(await products.getCartBadgeCount()).toBe(0);
   });
 
@@ -59,19 +59,19 @@ test.describe("Smoke testing", () => {
 
     await products.navigateToCart();
     const cart = new Cart(page);
-
     const checkout = new Checkout(page);
     await cart.checkout();
-
     expect(await checkout.isCheckoutInformationPageVisible()).toBe(true);
 
     await checkout.cancel();
-
     expect(await cart.isCartPageVisible()).toBe(true);
   });
 
   test("should checkout and pay", async ({ page }) => {
     const products = new Products(page);
+    const fakeUser = generateUser();
+    const fakeAddress = generateAddress();
+
     expect(await products.isProductsPageVisible()).toBe(true);
 
     await products.addProduct(testProducts.backpack);
@@ -84,9 +84,7 @@ test.describe("Smoke testing", () => {
 
     expect(await checkout.isCheckoutInformationPageVisible()).toBe(true);
 
-    const fakeUser = generateUser();
-    const fakeAddress = generateAddress();
-
+    // Checkout user information
     await checkout.setFirstName(fakeUser.firstName);
     await checkout.setLastName(fakeUser.lastName);
     await checkout.setPostalCode(fakeAddress.postalCode);
@@ -101,7 +99,9 @@ test.describe("Smoke testing", () => {
     expect(await checkoutComplete.isCheckoutCompletePageVisible()).toBe(true);
   });
 
-  test("should have accessibility violations", async ({ page }) => {
+  test("@accessibility should have accessibility violations", async ({
+    page,
+  }) => {
     // Check against wcag2a and wcag21aa rules
     const accessibilityResults = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag21aa"])

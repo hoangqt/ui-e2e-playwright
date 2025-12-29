@@ -12,20 +12,20 @@ export class Checkout {
   }
 
   async setFirstName(firstName: string) {
-    await this.page.locator("#first-name").fill(firstName);
+    await this.page.getByTestId("firstName").fill(firstName);
   }
 
   async setLastName(lastName: string) {
-    await this.page.locator("#last-name").fill(lastName);
+    await this.page.getByTestId("lastName").fill(lastName);
   }
 
   async setPostalCode(postalCode: string) {
-    await this.page.locator("#postal-code").fill(postalCode);
+    await this.page.getByTestId("postalCode").fill(postalCode);
   }
 
   async isCheckoutInformationPageVisible(): Promise<boolean> {
     const checkoutTitle = this.page
-      .locator('[data-test="title"]')
+      .getByTestId("title")
       .filter({ hasText: "Checkout: Your Information" });
     try {
       await checkoutTitle.waitFor({ state: "visible", timeout: 3000 });

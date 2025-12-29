@@ -4,13 +4,13 @@ export class Login {
   constructor(private page: Page) {}
 
   async goto() {
-    await this.page.goto("https://www.saucedemo.com");
+    await this.page.goto("/");
   }
 
   async login(username: string, password: string) {
-    await this.page.fill("#user-name", username);
-    await this.page.fill("#password", password);
-    await this.page.click("#login-button");
+    await this.page.getByTestId("username").fill(username);
+    await this.page.getByTestId("password").fill(password);
+    await this.page.getByTestId("login-button").click();
   }
 
   async logout() {
@@ -18,11 +18,8 @@ export class Login {
   }
 
   async isSuccessMessageVisible() {
-    // Wait for the shopping cart link to be visible
-    await this.page.waitForSelector('[data-test="shopping-cart-link"]', {
-      state: "visible",
-      timeout: 5000,
-    });
+    const cartLink = this.page.getByTestId("shopping-cart-link");
+    await cartLink.waitFor({ state: "visible", timeout: 5000 });
     return true;
   }
 }

@@ -5,7 +5,7 @@ export class CheckoutComplete {
 
   async isCheckoutCompletePageVisible(): Promise<boolean> {
     const checkoutTitle = this.page
-      .locator('[data-test="title"]')
+      .getByTestId("title")
       .filter({ hasText: "Checkout: Complete!" });
     try {
       await checkoutTitle.waitFor({ state: "visible", timeout: 3000 });
