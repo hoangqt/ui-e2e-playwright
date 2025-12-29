@@ -12,6 +12,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
 
     steps:
       - name: Checkout repository
@@ -42,12 +46,31 @@ jobs:
         run: |
           bunx prettier --check pages tests data
 
-      - name: Run tests
+      - name: Run tests (shard ${{ matrix.shard }}/3)
         run: |
-          bun run test
+          bunx playwright test --shard=${{ matrix.shard }}/3
 
       - name: Upload Allure report
         if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.shard }}
+          path: allure-results
+          retention-days: 7
+
+  merge-reports:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all Allure results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-*
+          path: allure-results
+          merge-multiple: true
+
+      - name: Upload merged Allure report
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
