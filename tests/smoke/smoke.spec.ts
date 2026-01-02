@@ -1,14 +1,14 @@
 import { test, expect } from "@playwright/test";
-import { Login } from "../../pages/Login";
-import { Products } from "../../pages/Products";
-import { Cart } from "../../pages/Cart";
-import { Checkout } from "../../pages/Checkout";
-import { CheckoutOverview } from "../../pages/CheckoutOverview";
-import { CheckoutComplete } from "../../pages/CheckoutComplete";
-import { testUsers } from "../../data/users";
+import { Login } from "@pages/Login";
+import { Products } from "@pages/Products";
+import { Cart } from "@pages/Cart";
+import { Checkout } from "@pages/Checkout";
+import { CheckoutOverview } from "@pages/CheckoutOverview";
+import { CheckoutComplete } from "@pages/CheckoutComplete";
+import { testUsers } from "@data/users";
 import { AxeBuilder } from "@axe-core/playwright";
-import { testProducts } from "../../data/products";
-import { generateUser, generateAddress } from "../../data/syntheticData";
+import { testProducts } from "@data/products";
+import { generateUser, generateAddress } from "@data/syntheticData";
 
 test.describe("Smoke testing", () => {
   test.beforeEach(async ({ page }) => {

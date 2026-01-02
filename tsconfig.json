@@ -5,7 +5,12 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@pages/*": ["pages/*"],
+      "@data/*": ["data/*"]
+    }
   },
-  "include": ["tests/**/*"]
+  "include": ["tests/**/*", "pages/**/*", "data/**/*"]
 }
